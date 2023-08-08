@@ -1,0 +1,1 @@
+# cei_2023_activity_recognition
