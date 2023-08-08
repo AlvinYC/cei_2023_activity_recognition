@@ -1,0 +1,7 @@
+ docker run -it\
+ --rm\
+ --shm-size=256m\
+ -p 7788:22\
+ -p 8097:8097\
+ -v /home/alvin/media/dataset_cv:/home/docker/media\
+ --name ssd cei_rar:0.1
