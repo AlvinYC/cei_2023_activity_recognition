@@ -1,4 +1,5 @@
-FROM python:3.9.16-slim
+#FROM python:3.9.16-slim
+FROM tensorflow/tensorflow:1.13.1-gpu
 MAINTAINER alvin
 
 ARG user=docker
@@ -90,7 +91,10 @@ RUN find ./ -name '*vsix' -exec  ~/.vscode-server/bin/${vscommit}/bin/code-serve
 RUN python -m pip install --user torch==1.13.1;\
     python -m pip install --user torchvision==0.14;\
     python -m pip install --user numpy==1.20.0
- 
+
+# project related linux package
+RUN sudo apt install python3-opencv -y
+
 ADD id_rsa*.pub /home/${user}/.ssh/authorized_keys
 
 ENTRYPOINT sudo service ssh restart && zsh
