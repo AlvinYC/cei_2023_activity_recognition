@@ -22,6 +22,24 @@ RUN apt-get update && apt-get install -y \
     apt-utils sudo vim zsh curl git make unzip \
     wget openssh-server powerline fonts-powerline 
 
+# install python3.9 by local file due to deadsnake don't support python3.9 on ubuntu18.04
+RUN apt-get install wget build-essential checkinstall -y \
+    && apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev \
+    libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev -y \
+    && cd /opt \
+    && wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz \
+    && tar xzf Python-3.9.16.tgz \
+    && cd Python-3.9.16 \
+    && ./configure --enable-optimizations \
+    && make altinstall
+
+##python symbolic link process
+RUN cd /usr/bin \
+    && unlink python3 \
+	&& unlink python \
+    && ln -s /usr/local/bin/python3.9 python3 \
+    && ln -s /usr/local/bin/python3.9 python
+
 # install https://github.com/openai/gym mention package
 #RUN apt-get install -y libglu1-mesa-dev libgl1-mesa-dev \
 #    libosmesa6-dev xvfb ffmpeg curl patchelf \
@@ -83,17 +101,14 @@ ADD ./vscode_extension/*.vsix /home/${user}/vscode_extension/
 # install vscode extension
 RUN find ./ -name '*vsix' -exec  ~/.vscode-server/bin/${vscommit}/bin/code-server --accept-server-license-terms --install-extension {} \;
 
-#RUN sudo apt-get install -y libc6-amd64-cross
-#RUN sudo ln -s /usr/x86_64-linux-gnu/lib64/ /lib64
-#ENV LD_LIBRARY_PATH="/lib64:/usr/x86_64-linux-gnu/lib"
-
 # pytroch and CV related package
-RUN python -m pip install --user torch==1.13.1;\
-    python -m pip install --user torchvision==0.14;\
-    python -m pip install --user numpy==1.20.0
+#RUN python -m pip install --user torch==1.13.1;\
+#    python -m pip install --user torchvision==0.14;\
+#RUN  python3 -m pip install --user numpy==1.20.0
 
 # project related linux package
-RUN sudo apt install python3-opencv -y
+RUN sudo apt-get upgrade -y --allow-unauthenticated;\
+    python3 -m pip install --user opencv-python
 
 ADD id_rsa*.pub /home/${user}/.ssh/authorized_keys
 

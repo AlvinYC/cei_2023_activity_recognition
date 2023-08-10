@@ -1,1 +1,1 @@
-docker build -t cei_rar:0.1 .
+docker build -t cei_rtar:0.1 .
