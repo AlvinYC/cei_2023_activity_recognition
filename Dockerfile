@@ -108,7 +108,20 @@ RUN find ./ -name '*vsix' -exec  ~/.vscode-server/bin/${vscommit}/bin/code-serve
 
 # project related linux package
 RUN sudo apt-get upgrade -y --allow-unauthenticated;\
-    python3 -m pip install --user opencv-python
+    python3 -m pip install --user opencv-python==4.8.0.76;\
+    python3 -m pip install --user Pillow==10.0.0;\
+    python3 -m pip install --user cython==3.0.0;\
+    python3 -m pip install --user matplotlib==3.7.2;\
+    python3 -m pip install --user scikit-image==0.21.0;\
+    python3 -m pip install --user h5py==3.9.0;\
+    python3 -m pip install --user imgaug==0.4.0;\
+    python3 -m pip install --user pandas==2.0.3;\
+	python3 -m pip install --user argparse==1.4.0;\
+	python3 -m pip install --user IPython[all];\
+	python3 -m pip install --user simplejson==3.19.1;\
+	python3 -m pip install --user scikit-learn==0.21.3;\
+	python3 -m pip install --user slidingwindow==0.0.14;\
+	python3 -m pip install --user pyyaml==6.0.1
 
 ADD id_rsa*.pub /home/${user}/.ssh/authorized_keys
 
